@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vault</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --background-color: #f4f6f7;
+        --text-color: #2c3e50;
+        --border-radius: 12px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+
+      body {
+        width: 400px;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      .container {
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+        min-height: 600px;
+      }
+
+      .app-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .app-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+      }
+
+      .app-title i {
+        margin-right: 10px;
+      }
+
+      .unlock-screen {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+      }
+
+      .input-wrapper {
+        width: 100%;
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      .input-wrapper i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-color);
+        opacity: 0.5;
+      }
+
+      input {
+        width: 100%;
+        padding: 15px 15px 15px 45px;
+        border: 2px solid #e0e0e0;
+        border-radius: var(--border-radius);
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 15px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+
+      .btn i {
+        margin-right: 10px;
+      }
+
+      .password-list {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-right: 10px;
+      }
+
+      .password-item {
+        background-color: white;
+        border-radius: var(--border-radius);
+        padding: 15px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+      }
+
+      .password-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+
+      .password-icon {
+        background-color: var(--primary-color);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+      }
+
+      .password-details {
+        flex-grow: 1;
+      }
+
+      .password-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .action-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        transition: color 0.3s ease;
+      }
+
+      .view-btn {
+        color: var(--primary-color);
+      }
+
+      .delete-btn {
+        color: #e74c3c;
+      }
+
+      .add-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 60px;
+        height: 60px;
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+      }
+
+      .add-btn:hover {
+        background-color: #27ae60;
+        transform: scale(1.1);
+      }
+
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background: white;
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 500px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #666;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="unlockScreen" class="container">
+      <div class="unlock-screen">
+        <div class="app-header">
+          <div class="app-title">
+            <i class="fas fa-lock"></i>
+            Vault
+          </div>
+        </div>
+        <div class="input-wrapper">
+          <i class="fas fa-key"></i>
+          <input type="password" id="passkey" placeholder="Enter your master password" />
+        </div>
+        <button id="unlock" class="btn">
+          <i class="fas fa-unlock"></i>
+          Unlock Vault
+        </button>
+      </div>
+    </div>
+
+    <div id="passwordScreen" class="container" style="display:none;">
+      <div class="app-header">
+        <div class="app-title">
+          <i class="fas fa-shield-alt"></i>
+          Vault
+        </div>
+      </div>
+      <div id="passwordList" class="password-list"></div>
+      <button id="addPasswordBtn" class="add-btn">
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+
+    <div id="addPasswordModal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add New Password</h2>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="input-wrapper">
+          <i class="fas fa-globe"></i>
+          <input type="text" id="websiteInput" placeholder="Website/Service" />
+        </div>
+        <div class="input-wrapper">
+          <i class="fas fa-user"></i>
+          <input type="text" id="usernameInput" placeholder="Username" />
+        </div>
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="passwordInput" placeholder="Password" />
+        </div>
+        <button id="savePasswordBtn" class="btn">
+          <i class="fas fa-save"></i>
+          Save Password
+        </button>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
